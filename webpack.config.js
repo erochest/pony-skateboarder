@@ -23,6 +23,16 @@ module.exports = {
                 test: /\.js$/,
                 exclude: /node_modules/,
                 loader: 'babel-loader'
+            },
+            {
+                test: /\.purs$/,
+                loader: 'purs-loader',
+                exclude: /node_modules/,
+                query: {
+                    psc: 'psa',
+                    src: ['bower_components/purescript-*/src/**/*.purs',
+                          'src/**/*.purs']
+                }
             }
         ]
     }
