@@ -11,7 +11,7 @@ module.exports = {
         path: './public/dist'
     },
 
-    // devtool: '#source-map',
+    devtool: '#source-map',
 
     module: {
         loaders: [
@@ -30,8 +30,10 @@ module.exports = {
                 exclude: /node_modules/,
                 query: {
                     psc: 'psa',
-                    src: ['bower_components/purescript-*/src/**/*.purs',
-                          'src/**/*.purs']
+                    src: [
+                        'bower_components/purescript-*/src/**/*.purs',
+                        'src/**/*.purs'
+                    ]
                 }
             }
         ]
