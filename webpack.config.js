@@ -8,7 +8,7 @@ module.exports = {
 
     output: {
         filename: '[name].bundle.js',
-        path: './public/dist'
+        path: './public/scripts'
     },
 
     devtool: '#source-map',
