@@ -1,0 +1,85 @@
+#!/usr/bin/env python3
+
+
+import datetime
+import os
+import shutil
+import subprocess
+import tempfile
+
+
+TO_BRANCH = 'gh-pages'
+DIRNAME = 'public'
+
+
+def get_origin():
+    output = subprocess.run(['git', 'remote', '--verbose'],
+                            stdout=subprocess.PIPE)
+    line = output.stdout.decode('utf8').splitlines()[0]
+    return line.split()[1]
+
+
+def clone(url, branch='master', to_dir=None):
+    if to_dir is None:
+        to_dir = os.path.join(os.getcwd(), 'clone-dir')
+    subprocess.run(['git', 'clone', '--branch', branch, url, to_dir])
+    return to_dir
+
+
+def get_git_contents(dirname):
+    return [os.path.join(dirname, fn)
+            for fn in os.listdir(dirname)
+            if fn != '.git']
+
+
+def run_in(command, cwd):
+    with subprocess.Popen(command, cwd=cwd) as proc:
+        return proc.wait()
+
+
+def add_all(dirname):
+    return run_in(['git', 'add', '--all', '.'], dirname)
+
+
+def commit(message, dirname):
+    return run_in(['git', 'commit', '-m', message], dirname)
+
+
+def push(branch, dirname):
+    return run_in(['git', 'push', 'origin', branch], dirname)
+
+
+def main():
+    cwd = os.getcwd()
+    origin = get_origin()
+    # tempdir = tempfile.mkdtemp()
+    tempdir = os.path.expanduser('~/tmp/deploy')
+    site_dir = os.path.join(tempdir, 'site')
+
+    try:
+        clone_dir = clone(origin, 'gh-pages', site_dir)
+
+        for child in get_git_contents(site_dir):
+            if os.path.isfile(child):
+                os.remove(child)
+            else:
+                shutil.rmtree(child)
+
+        for child in get_git_contents(os.path.join(cwd, DIRNAME)):
+            base = os.path.basename(child)
+            if os.path.isfile(child):
+                shutil.copy2(child, os.path.join(site_dir, base))
+            else:
+                shutil.copytree(child, os.path.join(site_dir, base))
+
+        add_all(site_dir)
+        commit('Deploying ' + datetime.datetime.now().strftime('%c'), site_dir)
+        push(TO_BRANCH, site_dir)
+
+    finally:
+        # shutil.rmtree(tempdir)
+        pass
+
+
+if __name__ == '__main__':
+    main()

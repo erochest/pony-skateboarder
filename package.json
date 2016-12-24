@@ -13,7 +13,8 @@
     "build": "webpack --profile -p",
     "clear": "rm -rf node_modules/ npm-debug.log public/dist/ typings/",
     "count": "find app -name '*.js' | xargs wc -l | sort",
-    "typings": "typings install"
+    "typings": "typings install",
+    "deploy": "./bin/deploy"
   },
   "dependencies": {
     "babel-core": "^6.18.2",
