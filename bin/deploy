@@ -52,8 +52,8 @@ def push(branch, dirname):
 def main():
     cwd = os.getcwd()
     origin = get_origin()
-    # tempdir = tempfile.mkdtemp()
-    tempdir = os.path.expanduser('~/tmp/deploy')
+    tempdir = tempfile.mkdtemp()
+    # tempdir = os.path.expanduser('~/tmp/deploy')
     site_dir = os.path.join(tempdir, 'site')
 
     try:
@@ -77,7 +77,7 @@ def main():
         push(TO_BRANCH, site_dir)
 
     finally:
-        # shutil.rmtree(tempdir)
+        shutil.rmtree(tempdir)
         pass
 
 
