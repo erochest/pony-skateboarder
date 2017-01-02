@@ -3,7 +3,7 @@ import PLAYER from '../constants/player';
 import STATE_EVENTS from '../constants/state-events';
 import { Player } from '../models/player';
 
-export class ExampleState extends Phaser.State {
+export class PlayState extends Phaser.State {
     map = null;
     layer = null;
 

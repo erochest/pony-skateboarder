@@ -2,7 +2,7 @@ import STATE_EVENTS from './constants/state-events';
 
 import { BootstrapState } from './states/bootstrap-state';
 import { LoadingState } from './states/loading-state';
-import { ExampleState } from './states/example-state';
+import { PlayState } from './states/play-state';
 
 export class StateManager {
     game = null;
@@ -17,7 +17,7 @@ export class StateManager {
     setupStates() {
         this.game.state.add('Bootstrap', BootstrapState);
         this.game.state.add('Loading', LoadingState);
-        this.game.state.add('Example', ExampleState);
+        this.game.state.add('Playing', PlayState);
     }
 
     setupNativeListeners() {
@@ -32,7 +32,7 @@ export class StateManager {
         });
 
         this.game.on(STATE_EVENTS.LOADING_COMPLETED, () => {
-            this.game.state.start('Example');
+            this.game.state.start('Playing');
         });
     }
 
